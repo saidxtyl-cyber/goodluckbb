@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Match Day</title>
+
+<style>
+
+/* =========================
+   BASIC
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #07111f;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: -15px;
+
+    background:
+        linear-gradient(
+            rgba(5, 15, 30, 0.62),
+            rgba(5, 15, 30, 0.82)
+        ),
+        url("image/couple.png");
+
+    background-size: cover;
+    background-position: center;
+
+    filter: blur(3px);
+
+    transform: scale(1.03);
+
+    z-index: -2;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(73, 137, 210, 0.18),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(37, 91, 150, 0.20),
+            transparent 40%
+        );
+
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* =========================
+   PAGE SYSTEM
+========================= */
+
+.page {
+    display: none;
+
+    min-height: 100vh;
+    width: 100%;
+
+    position: relative;
+    overflow: hidden;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.page.active {
+    display: flex;
+}
+
+/* =========================
+   GENERAL CONTENT
+========================= */
+
+.content {
+    width: 90%;
+    max-width: 900px;
+
+    text-align: center;
+
+    padding: 40px 20px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.small-title {
+    font-size: 12px;
+    letter-spacing: 5px;
+
+    color: #8bbcff;
+
+    margin-bottom: 18px;
+
+    font-weight: bold;
+}
+
+h1 {
+    font-size: clamp(45px, 10vw, 90px);
+
+    letter-spacing: 5px;
+
+    margin-bottom: 20px;
+
+    text-shadow:
+        0 5px 25px rgba(0, 0, 0, 0.45);
+}
+
+h2 {
+    font-size: clamp(28px, 6vw, 55px);
+
+    letter-spacing: 3px;
+
+    margin-bottom: 20px;
+
+    text-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.45);
+}
+
+p {
+    color: #d1dbea;
+
+    line-height: 1.7;
+
+    font-size: 15px;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+button {
+    margin-top: 30px;
+
+    padding: 14px 28px;
+
+    border: 1px solid #5d8fc5;
+
+    border-radius: 30px;
+
+    background: rgba(10, 28, 50, 0.88);
+
+    color: white;
+
+    font-size: 12px;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+button:hover {
+    background: #183b62;
+
+    transform: translateY(-2px);
+
+    border-color: #8dbfff;
+}
+
+.back-btn {
+    margin-right: 8px;
+}
+
+/* =========================
+   BUTTON GROUP
+========================= */
+
+.button-group {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+
+    margin-top: 5px;
+}
+
+.button-group button {
+    margin-top: 20px;
+}
+
+/* =========================
+   PAGE 1 - INTRO
+========================= */
+
+#intro {
+    background:
+        linear-gradient(
+            rgba(5, 12, 24, 0.25),
+            rgba(5, 12, 24, 0.45)
+        );
+}
+
+.intro-content {
+    max-width: 850px;
+}
+
+.intro-date {
+    font-size: 13px;
+
+    letter-spacing: 4px;
+
+    color: #9ac7ff;
+
+    margin-bottom: 25px;
+}
+
+.intro-message {
+    max-width: 550px;
+
+    margin: auto;
+}
+
+/* =========================
+   PAGE 2 - MAP
+========================= */
+
+.map-image-card {
+    width: 100%;
+
+    max-width: 850px;
+
+    margin: 25px auto 0;
+
+    padding: 8px;
+
+    background: rgba(8, 20, 35, 0.90);
+
+    border: 1px solid #3c5875;
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 15px 50px rgba(0, 0, 0, 0.5);
+
+    overflow: hidden;
+}
+
+.distance-map-image {
+    width: 100%;
+
+    display: block;
+
+    border-radius: 21px;
+}
+
+/* =========================
+   PAGE 3 - PLAYER
+========================= */
+
+.player-card {
+    max-width: 600px;
+
+    margin: auto;
+
+    padding: 40px 25px;
+
+    background: rgba(8, 18, 31, 0.90);
+
+    border: 1px solid #3b5775;
+
+    border-radius: 30px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.45);
+}
+
+.player-image {
+    width: 210px;
+
+    max-width: 75%;
+
+    margin: 0 auto 25px;
+
+    display: block;
+
+    border-radius: 25px;
+
+    border: 1px solid #3e6288;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.45);
+}
+
+.player-name {
+    font-size: clamp(30px, 7vw, 60px);
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 12px;
+}
+
+.team-name {
+    color: #77afff;
+
+    letter-spacing: 3px;
+
+    font-size: 14px;
+
+    margin-bottom: 30px;
+}
+
+.quarter {
+    display: inline-block;
+
+    padding: 10px 18px;
+
+    border: 1px solid #5a82ad;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+}
+
+.player-message {
+    max-width: 500px;
+
+    margin: 25px auto 0;
+}
+
+/* =========================
+   PAGE 4 - BANNER
+========================= */
+
+.banner-card {
+    max-width: 800px;
+
+    margin: 25px auto;
+
+    padding: 10px;
+
+    background: rgba(8, 18, 31, 0.90);
+
+    border: 1px solid #3c5875;
+
+    border-radius: 25px;
+}
+
+.banner-card img {
+    width: 100%;
+
+    display: block;
+
+    border-radius: 18px;
+}
+
+.support-text {
+    max-width: 550px;
+
+    margin: 20px auto;
+}
+
+/* =========================
+   PAGE 5 - MATCH DETAILS
+========================= */
+
+.match-card {
+    max-width: 600px;
+
+    margin: auto;
+
+    padding: 40px 25px;
+
+    background: rgba(8, 18, 31, 0.90);
+
+    border: 1px solid #3c5875;
+
+    border-radius: 30px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.4);
+}
+
+.match-time {
+    font-size: clamp(55px, 12vw, 100px);
+
+    font-weight: bold;
+
+    color: #ffffff;
+
+    margin-bottom: 15px;
+}
+
+.match-date {
+    color: #78afff;
+
+    letter-spacing: 4px;
+
+    font-size: 13px;
+
+    margin-bottom: 35px;
+}
+
+.vs {
+    font-size: 20px;
+
+    letter-spacing: 2px;
+
+    margin: 15px 0;
+}
+
+.field {
+    color: #c1cede;
+
+    margin-top: 20px;
+}
+
+/* =========================
+   PAGE 6 - COUNTDOWN
+========================= */
+
+.countdown-layout {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 35px;
+
+    margin-top: 30px;
+}
+
+.countdown-photo {
+    width: 180px;
+
+    max-width: 30%;
+}
+
+.countdown-photo img {
+    width: 100%;
+
+    display: block;
+
+    filter:
+        drop-shadow(
+            0 15px 25px rgba(0,0,0,0.5)
+        );
+}
+
+.countdown-boxes {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 12px;
+
+    width: min(550px, 100%);
+}
+
+.time-box {
+    background: rgba(8, 18, 31, 0.92);
+
+    border: 1px solid #344e6b;
+
+    border-radius: 18px;
+
+    padding: 20px 10px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.25);
+}
+
+.time-number {
+    display: block;
+
+    font-size:
+        clamp(30px, 6vw, 55px);
+
+    font-weight: bold;
+}
+
+.time-label {
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: #88a8ce;
+}
+
+.cheering-text {
+    margin-top: 30px;
+}
+
+/* =========================
+   PAGE 7 - STARTED
+========================= */
+
+#started {
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(31, 77, 125, 0.75),
+            rgba(5, 12, 24, 0.45) 65%
+        );
+}
+
+.started-title {
+    font-size:
+        clamp(45px, 10vw, 90px);
+
+    font-weight: bold;
+
+    letter-spacing: 4px;
+
+    margin-bottom: 25px;
+}
+
+.go-text {
+    color: #78afff;
+
+    font-size:
+        clamp(25px, 6vw, 50px);
+
+    font-weight: bold;
+
+    margin-bottom: 25px;
+}
+
+.started-message {
+    max-width: 550px;
+
+    margin: auto;
+}
+
+/* =========================
+   PAGE 8 - RESULT
+========================= */
+
+.result-question {
+    font-size:
+        clamp(40px, 9vw, 75px);
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 25px;
+}
+
+.result-subtitle {
+    max-width: 550px;
+
+    margin: auto;
+}
+
+.result-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+
+    margin-top: 5px;
+}
+
+.result-buttons button {
+    min-width: 160px;
+}
+
+.win-button {
+    border-color: #6b9ed2;
+}
+
+.lose-button {
+    border-color: #607187;
+}
+
+/* =========================
+   PAGE 9 - WON
+========================= */
+
+#won {
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(25, 76, 125, 0.80),
+            rgba(5, 12, 24, 0.45) 65%
+        );
+}
+
+.won-title {
+    font-size:
+        clamp(50px, 11vw, 100px);
+
+    font-weight: bold;
+
+    letter-spacing: 4px;
+
+    margin-bottom: 20px;
+}
+
+.won-text {
+    color: #78afff;
+
+    font-size:
+        clamp(25px, 6vw, 50px);
+
+    font-weight: bold;
+
+    margin-bottom: 30px;
+}
+
+.final-message {
+    max-width: 550px;
+
+    margin: auto;
+}
+
+/* =========================
+   PAGE 10 - LOST
+========================= */
+
+#lost {
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(37, 53, 72, 0.80),
+            rgba(5, 12, 24, 0.45) 65%
+        );
+}
+
+.lost-title {
+    font-size:
+        clamp(50px, 11vw, 100px);
+
+    font-weight: bold;
+
+    letter-spacing: 4px;
+
+    margin-bottom: 20px;
+}
+
+.lost-text {
+    color: #b9c8da;
+
+    font-size:
+        clamp(25px, 6vw, 50px);
+
+    font-weight: bold;
+
+    margin-bottom: 30px;
+}
+
+.lost-message {
+    max-width: 550px;
+
+    margin: auto;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .content {
+        padding: 30px 15px;
+    }
+
+    h1 {
+        letter-spacing: 3px;
+    }
+
+    h2 {
+        letter-spacing: 2px;
+    }
+
+    .countdown-layout {
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+    .countdown-photo {
+        width: 150px;
+
+        max-width: 55%;
+
+        order: 1;
+    }
+
+    .countdown-boxes {
+        order: 2;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        max-width: 350px;
+    }
+
+    .cheering-text {
+        order: 3;
+    }
+
+    .map-image-card {
+        padding: 5px;
+
+        border-radius: 20px;
+    }
+
+    .distance-map-image {
+        border-radius: 16px;
+    }
+
+    .banner-card {
+        padding: 6px;
+    }
+
+    .player-image {
+        width: 180px;
+    }
+
+    .button-group {
+        flex-direction: column;
+
+        gap: 0;
+    }
+
+    .button-group button {
+        width: 200px;
+    }
+
+    .result-buttons {
+        flex-direction: column;
+
+        align-items: center;
+    }
+
+    .result-buttons button {
+        width: 200px;
+    }
+
+    button {
+        margin-top: 20px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =========================
+     PAGE 1 - INTRO
+========================= -->
+
+<section id="intro" class="page active">
+
+    <div class="content intro-content">
+
+        <div class="small-title">
+            A LITTLE SOMETHING FROM FAR AWAY
+        </div>
+
+        <h1>
+            MATCH DAY
+        </h1>
+
+        <div class="intro-date">
+            30 SEPTEMBER 2026
+        </div>
+
+        <p class="intro-message">
+            even though i can't be there,<br>
+            i still wanted to do something for your match day.
+        </p>
+
+        <button onclick="showMap()">
+            ENTER MATCH DAY
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PAGE 2 - DISTANCE
+========================= -->
+
+<section id="map" class="page">
+
+    <div class="content">
+
+        <div class="small-title">
+            THE DISTANCE
+        </div>
+
+        <h2>
+            JITRA → GOPENG
+        </h2>
+
+        <p>
+            kinda far from each other,<br>
+            but i'll still be cheering for you from here.
+        </p>
+
+        <div class="map-image-card">
+
+            <img
+                src="image/maps.png"
+                class="distance-map-image"
+                alt="Distance Map"
+            >
+
+        </div>
+
+        <div class="button-group">
+
+            <button onclick="showPlayer()">
+                NEXT
+            </button>
+
+             <button
+                class="back-btn"
+                onclick="showIntro()"
+            >
+                BACK
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PAGE 3 - PLAYER
+========================= -->
+
+<section id="player" class="page">
+
+    <div class="content">
+
+        <div class="small-title">
+            TODAY'S PLAYER
+        </div>
+
+        <div class="player-card">
+
+            <img
+                src="image/his.png"
+                class="player-image"
+                alt="Player"
+            >
+
+            <div class="player-name">
+                ZULFAHMI SYAZWI
+            </div>
+
+            <div class="team-name">
+                WAK JOKO LEGACY
+            </div>
+
+            <div class="quarter">
+                QUARTER FINAL
+            </div>
+
+            <p class="player-message">
+                go give it your best today.<br>
+                i'll be rooting for you.
+            </p>
+
+        </div>
+
+        <div class="button-group">
+
+    
+            <button onclick="showBanner()">
+                NEXT
+            </button>
+
+             <button
+                class="back-btn"
+                onclick="showMap()">
+                BACK
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PAGE 4 - BANNER
+========================= -->
+
+<section id="banner" class="page">
+
+    <div class="content">
+
+        <div class="small-title">
+            FROM YOUR SUPPORTER
+        </div>
+
+        <h2>
+            THIS ONE'S FOR YOU
+        </h2>
+
+        <div class="banner-card">
+
+            <img
+                src="image/banner.png"
+                alt="Support Banner"
+            >
+
+        </div>
+
+        <p class="support-text">
+            just a little something to remind you<br>
+            that i'm always on your side.
+        </p>
+
+        <div class="button-group">
+
+            <button onclick="showMatch()">
+                NEXT
+            </button>
+
+             <button
+                class="back-btn"
+                onclick="showPlayer()"
+            >
+                BACK
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PAGE 5 - MATCH DETAILS
+========================= -->
+
+<section id="match" class="page">
+
+    <div class="content">
+
+        <div class="small-title">
+            MATCH DETAILS
+        </div>
+
+        <div class="match-card">
+
+            <div class="match-time">
+                5:40 PM
+            </div>
+
+            <div class="match-date">
+                30 SEPTEMBER 2026
+            </div>
+
+            <div class="vs">
+                TEAM 67 VS WAK JOKO LEGACY
+            </div>
+
+            <div class="field">
+                KMPK FIELD
+            </div>
+
+            <div class="quarter">
+                QUARTER FINAL
+            </div>
+
+        </div>
+
+        <div class="button-group">
+
+
+            <button onclick="showCountdown()">
+                START COUNTDOWN
+            </button>
+
+            
+            <button
+                class="back-btn"
+                onclick="showBanner()"
+            >
+                BACK
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PAGE 6 - COUNTDOWN
+========================= -->
+
+<section id="countdown" class="page">
+
+    <div class="content">
+
+        <div class="small-title">
+            UNTIL MATCH DAY
+        </div>
+
+        <h2>
+            THE COUNTDOWN
+        </h2>
+
+        <div class="countdown-layout">
+
+            <div class="countdown-photo">
+
+                <img
+                    src="image/holdbannerr.png"
+                    alt="Hold Banner"
+                >
+
+            </div>
+
+            <div class="countdown-boxes">
+
+                <div class="time-box">
+
+                    <span
+                        id="days"
+                        class="time-number"
+                    >
+                        00
+                    </span>
+
+                    <span class="time-label">
+                        DAYS
+                    </span>
+
+                </div>
+
+
+                <div class="time-box">
+
+                    <span
+                        id="hours"
+                        class="time-number"
+                    >
+                        00
+                    </span>
+
+                    <span class="time-label">
+                        HOURS
+                    </span>
+
+                </div>
+
+
+                <div class="time-box">
+
+                    <span
+                        id="minutes"
+                        class="time-number"
+                    >
+                        00
+                    </span>
+
+                    <span class="time-label">
+                        MINUTES
+                    </span>
+
+                </div>
+
+
+                <div class="time-box">
+
+                    <span
+                        id="seconds"
+                        class="time-number"
+                    >
+                        00
+                    </span>
+
+                    <span class="time-label">
+                        SECONDS
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <p class="cheering-text">
+            not long now.<br>
+            good luck for your match.
+        </p>
+
+        <button onclick="showMatch()">
+            BACK
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PAGE 7 - MATCH STARTED
+========================= -->
+
+<section id="started" class="page">
+
+    <div class="content">
+
+        <div class="small-title">
+            IT'S TIME
+        </div>
+
+        <div class="started-title">
+            MATCH STARTED.
+        </div>
+
+        <div class="go-text">
+            GO GO FAHMI!
+        </div>
+
+        <p class="started-message">
+            go play your game.<br>
+            stay focused and give it your best.<br>
+            i'll be cheering for you from here.
+        </p>
+
+        <div class="button-group">
+  
+            <button onclick="showResult()">
+                MATCH FINISHED
+            </button>
+
+            <button
+                class="back-btn"
+                onclick="showCountdown()"
+            >
+                BACK
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PAGE 8 - RESULT
+========================= -->
+
+<section id="result" class="page">
+
+    <div class="content">
+
+        <div class="small-title">
+            AFTER THE MATCH
+        </div>
+
+        <div class="result-question">
+            MATCH RESULT
+        </div>
+
+        <p class="result-subtitle">
+            so... how did it go?<br>
+            whatever the result, i'm still proud of you.
+        </p>
+
+        <div class="result-buttons">
+
+
+            <button
+                class="win-button"
+                onclick="showWon()"
+            >
+                WE WON
+            </button>
+
+            <button
+                class="lose-button"
+                onclick="showLost()"
+            >
+                WE LOST
+            </button>
+
+            
+            <button
+                class="back-btn"
+                onclick="showStarted()"
+            >
+                BACK
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PAGE 9 - WON
+========================= -->
+
+<section id="won" class="page">
+
+    <div class="content">
+
+        <div class="small-title">
+            YOU DID IT !!
+        </div>
+
+        <div class="won-title">
+            YOU WON.
+        </div>
+
+        <div class="won-text">
+            I'M SO PROUD OF YOU BB 
+        </div>
+
+        <p class="final-message">
+            yeayy you did it.<br>
+            all that effort was worth it.<br>
+            enjoy the win, you deserve it cintaku.
+            <br><br>
+            wish i could've been there<br>
+            to celebrate with you. 
+             <br><br>
+             anw go get some rest!<br>
+        </p>
+
+        <button onclick="showResult()">
+            BACK
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PAGE 10 - LOST
+========================= -->
+
+<section id="lost" class="page">
+
+    <div class="content">
+
+        <div class="small-title">
+            AFTER THE MATCH
+        </div>
+
+        <div class="lost-title">
+            IT'S OKAY.
+        </div>
+
+        <div class="lost-text">
+            KEEP YOUR HEAD UP.
+        </div>
+
+        <p class="lost-message">
+            it's okay, don't be too hard on yourself.<br>
+            one match doesn't change anything.
+            <br><br>
+            you still gave it your best,<br>
+            and that's what matters.
+            <br><br>
+            get some rest, okay?<br>
+            i'm still proud of you. ily 
+        </p>
+
+        <button onclick="showResult()">
+            BACK
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+/* =========================
+   HIDE ALL PAGES
+========================= */
+
+function hideAllPages() {
+
+    const pages =
+        document.querySelectorAll(".page");
+
+    pages.forEach(function(page) {
+
+        page.classList.remove("active");
+
+    });
+
+}
+
+
+/* =========================
+   PAGE 1
+========================= */
+
+function showIntro() {
+
+    hideAllPages();
+
+    document
+        .getElementById("intro")
+        .classList.add("active");
+
+}
+
+
+/* =========================
+   PAGE 2
+========================= */
+
+function showMap() {
+
+    hideAllPages();
+
+    document
+        .getElementById("map")
+        .classList.add("active");
+
+}
+
+
+/* =========================
+   PAGE 3
+========================= */
+
+function showPlayer() {
+
+    hideAllPages();
+
+    document
+        .getElementById("player")
+        .classList.add("active");
+
+}
+
+
+/* =========================
+   PAGE 4
+========================= */
+
+function showBanner() {
+
+    hideAllPages();
+
+    document
+        .getElementById("banner")
+        .classList.add("active");
+
+}
+
+
+/* =========================
+   PAGE 5
+========================= */
+
+function showMatch() {
+
+    hideAllPages();
+
+    document
+        .getElementById("match")
+        .classList.add("active");
+
+}
+
+
+/* =========================
+   COUNTDOWN DATE
+========================= */
+
+const matchDate =
+    new Date(
+        "2026-09-30T17:40:00+08:00"
+    ).getTime();
+
+
+/* =========================
+   SHOW COUNTDOWN
+========================= */
+
+function showCountdown() {
+
+    hideAllPages();
+
+    document
+        .getElementById("countdown")
+        .classList.add("active");
+
+    updateCountdown();
+
+}
+
+
+/* =========================
+   UPDATE COUNTDOWN
+========================= */
+
+function updateCountdown() {
+
+    const now =
+        new Date().getTime();
+
+    const distance =
+        matchDate - now;
+
+
+    if (distance <= 0) {
+
+        document
+            .getElementById("days")
+            .innerText = "00";
+
+        document
+            .getElementById("hours")
+            .innerText = "00";
+
+        document
+            .getElementById("minutes")
+            .innerText = "00";
+
+        document
+            .getElementById("seconds")
+            .innerText = "00";
+
+
+        const countdownPage =
+            document.getElementById(
+                "countdown"
+            );
+
+
+        if (
+            countdownPage
+                .classList
+                .contains("active")
+        ) {
+
+            showStarted();
+
+        }
+
+        return;
+
+    }
+
+
+    const days =
+        Math.floor(
+            distance /
+            (1000 * 60 * 60 * 24)
+        );
+
+
+    const hours =
+        Math.floor(
+            (
+                distance %
+                (1000 * 60 * 60 * 24)
+            )
+            /
+            (1000 * 60 * 60)
+        );
+
+
+    const minutes =
+        Math.floor(
+            (
+                distance %
+                (1000 * 60 * 60)
+            )
+            /
+            (1000 * 60)
+        );
+
+
+    const seconds =
+        Math.floor(
+            (
+                distance %
+                (1000 * 60)
+            )
+            /
+            1000
+        );
+
+
+    document
+        .getElementById("days")
+        .innerText =
+        String(days)
+            .padStart(2, "0");
+
+
+    document
+        .getElementById("hours")
+        .innerText =
+        String(hours)
+            .padStart(2, "0");
+
+
+    document
+        .getElementById("minutes")
+        .innerText =
+        String(minutes)
+            .padStart(2, "0");
+
+
+    document
+        .getElementById("seconds")
+        .innerText =
+        String(seconds)
+            .padStart(2, "0");
+
+}
+
+
+/* =========================
+   PAGE 7 - STARTED
+========================= */
+
+function showStarted() {
+
+    hideAllPages();
+
+    document
+        .getElementById("started")
+        .classList.add("active");
+
+}
+
+
+/* =========================
+   PAGE 8 - RESULT
+========================= */
+
+function showResult() {
+
+    hideAllPages();
+
+    document
+        .getElementById("result")
+        .classList.add("active");
+
+}
+
+
+/* =========================
+   PAGE 9 - WON
+========================= */
+
+function showWon() {
+
+    hideAllPages();
+
+    document
+        .getElementById("won")
+        .classList.add("active");
+
+}
+
+
+/* =========================
+   PAGE 10 - LOST
+========================= */
+
+function showLost() {
+
+    hideAllPages();
+
+    document
+        .getElementById("lost")
+        .classList.add("active");
+
+}
+
+
+/* =========================
+   RUN EVERY SECOND
+========================= */
+
+setInterval(
+    updateCountdown,
+    1000
+);
+
+updateCountdown();
+
+</script>
+
+</body>
+</html>
